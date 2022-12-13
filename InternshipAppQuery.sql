@@ -105,3 +105,25 @@ INSERT INTO Students(Name, Pin, DateOfBirth, Gender, CityOfResidence) VALUES
 ('Krešo Kolarić', '58635072591', '2005-11-16', 'M', 'Split')
 
 -- STEP 2 -- TEST CASES FOR PRIMARY TABLES
+
+CREATE TABLE StudentHomeworks (
+	StudentId INT REFERENCES Students(Id),
+	HomeworkId INT REFERENCES Homeworks(Id),
+	Grade INT,
+	PRIMARY KEY(StudentId, HomeworkId)
+)
+
+CREATE TABLE StudentAreas (
+	StudentId INT REFERENCES Students(Id),
+	AreaId INT REFERENCES Areas(Id),
+	Status VARCHAR(30),
+	PRIMARY KEY(StudentId, AreaId)
+)
+
+CREATE TABLE InternshipAreas (
+	InternshipId INT REFERENCES Internships(Id),
+	AreaId INT REFERENCES Areas(Id),
+	PRIMARY KEY(InternshipId, AreaId)
+)
+
+-- STEP 3 -- JUNCTION TABLES
