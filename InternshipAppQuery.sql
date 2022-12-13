@@ -1,4 +1,4 @@
-CREATE TABLE Members(
+
 	Id SERIAL PRIMARY KEY,
 	Name VARCHAR(30) NOT NULL,
 	Pin VARCHAR(11) NOT NULL,
@@ -207,3 +207,21 @@ INSERT INTO InternshipAreas(InternshipId, AreaId) VALUES
 (6, 4)
 
 -- STEP 4 -- JUNCTION TABLES TEST CASES
+
+
+ALTER TABLE Students 
+	ADD CONSTRAINT AgeLimit CHECK
+	(DATE_PART('year', NOW()) - DATE_PART('year', DateOfBirth) >= 16 AND
+	 DATE_PART('year', NOW()) - DATE_PART('year', DateOfBirth) <= 24)
+
+-- Iduci blok : SELECT dohvaca informacije o broju polaznika,
+-- ali nisam nasao rjesenje kako to implementirati u constraint
+ALTER TABLE StudentAreas
+	ADD CONSTRAINT CountLimit CHECK
+	(COUNT(
+		SELECT sa.AreaId, COUNT(sa.StudentId) FROM StudentAreas sa
+		GROUP BY sa.AreaId)
+	 < 20)
+	 
+
+-- STEP 5 -- UPDATE CONSTRAINTS
