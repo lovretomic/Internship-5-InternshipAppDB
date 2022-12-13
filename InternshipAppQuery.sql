@@ -1,4 +1,4 @@
-
+CREATE TABLE Members(
 	Id SERIAL PRIMARY KEY,
 	Name VARCHAR(30) NOT NULL,
 	Pin VARCHAR(11) NOT NULL,
@@ -225,3 +225,44 @@ ALTER TABLE StudentAreas
 	 
 
 -- STEP 5 -- UPDATE CONSTRAINTS
+
+SELECT m.Name FROM Members m WHERE m.CityOfResidence != 'Split'
+
+SELECT i.StartDate, i.EndDate FROM Internships i ORDER BY i.StartDate DESC
+
+SELECT DISTINCT s.Name FROM Students s
+	JOIN StudentAreas sa ON s.Id = sa.StudentId
+	JOIN InternshipAreas ia ON ia.AreaId = sa.AreaId
+	JOIN Internships i ON i.Id = ia.InternshipId
+	WHERE DATE_PART('year',i.StartDate) = 2022
+	
+SELECT DISTINCT s.Name FROM Students s
+	JOIN StudentAreas sa ON s.Id = sa.StudentId
+	JOIN InternshipAreas ia ON ia.AreaId = sa.AreaId
+	JOIN Internships i ON i.Id = ia.InternshipId
+	JOIN Areas a ON a.Id = ia.AreaId
+	WHERE DATE_PART('year',i.StartDate) = 2022 AND s.Gender = 'F' AND a.Title = 'Programiranje'
+
+SELECT DISTINCT s.Name FROM Students s
+	JOIN StudentAreas sa ON s.Id = sa.StudentId
+	JOIN InternshipAreas ia ON ia.AreaId = sa.AreaId
+	JOIN Internships i ON i.Id = ia.InternshipId
+	JOIN Areas a ON a.Id = ia.AreaId
+	WHERE s.Gender = 'M' AND a.Title = 'Marketing' AND sa.Status = 'IZBACEN'
+
+UPDATE Members
+	SET CityOfResidence = 'Moskva'
+	WHERE RIGHT(Name, 2) = 'in'
+
+SELECT m.Name, m.DateOfBirth, DATE_PART('year', NOW()) - DATE_PART('year', m.DateOfBirth) AS Age FROM Members m
+	WHERE DATE_PART('year', NOW()) - DATE_PART('year', m.DateOfBirth) > 25
+
+-- Iduci blok dohvaca potrebne podatke, ali nisam pronasao rjesenje
+-- kako te podatke izbrisati
+SELECT s.Name, ROUND(AVG(sh.Grade), 2) AS AverageGrade FROM Students s 
+	JOIN StudentHomeworks sh ON sh.StudentId = s.Id
+	JOIN Homeworks h ON sh.HomeworkId = h.Id
+	GROUP BY s.Name
+	HAVING ROUND(AVG(sh.Grade), 2) < 2.4
+
+-- STEP 6 -- TASKS
